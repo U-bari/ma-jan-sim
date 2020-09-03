@@ -39,18 +39,18 @@ def expect(A,B,C,D,rate):
 		print("")
 		print(me)
 		print("レート　　　  " +  str(rate[me]))
-		print("下人数期待値　" + str(expectation))
+		print("平均順位　　　" + str(4 - expectation))
 		print("1位確率　　 　" + str(prob[0]*prob[1]*prob[2]))
 		print("2位確率　　 　" + str((prob[0]*prob[1]*(1-prob[2])) + (prob[2]*prob[1]*(1-prob[0])) + (prob[0]*prob[2]*(1-prob[1]))))		
 		print("3位確率　　 　" + str(prob[0]*(1-prob[1])*(1-prob[2]) + prob[1]*(1-prob[0])*(1-prob[2]) + prob[2]*(1-prob[1])*(1-prob[0])))
 		print("4位確率　　 　" + str((1 - prob[0])*(1-prob[1])*(1-prob[2])))
 		
 
-def rate_all(data_list,rate,A):
+def rate_all(data_list,rate,A,K=16):
 	the_rate = []
 	j = 0
 	for i in data_list:
-		rate = rating(i,rate) 
+		rate = rating(i,rate,K) 
 		try:
 			the_rate.append(rate[A])
 		except KeyError:
