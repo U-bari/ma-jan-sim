@@ -17,16 +17,17 @@ for i in data_list:
 
 rate = rate_system.make_rate(member,rate)
 
+print("係数を入力")
+K = int(input())
+A = ""
 
 x = 100
 while x != "1" and x != "2":
 	print("1:レート表示　2:対戦予想 (半角で入力)")
 	x = input()
-
-print("選手のグラフを見たい場合は選手名を入力。そうでない場合はEnter")
-A = input()
-print("係数を入力")
-K = int(input())
+if x == "1":
+	print("選手のグラフを見たい場合は選手名を入力。そうでない場合はEnter")
+	A = input()
 #rateの作成
 rate = rate_system.rate_all(data_list,rate,A,K)
 sorted_rate = sorted(rate.items(), key=lambda x:x[1], reverse=True)
