@@ -3,6 +3,7 @@ import data
 
 time = data.time
 
+#dataごとにレーティング
 def rating(data,rate,K=16):
 	for i in range(len(data)):
 		for rank in range(4):
@@ -35,6 +36,7 @@ def expect(A,B,C,D,rate):
 	C_prob = []
 	D_prob = []
 	prob_list = [A_prob, B_prob, C_prob, D_prob]
+	compare_prob_list = []
 	for me, W in zip(player, prob_list):
 		prob = []
 		#me:enemy確率計算
@@ -47,20 +49,23 @@ def expect(A,B,C,D,rate):
 		W.append((prob[0]*prob[1]*(1-prob[2])) + (prob[2]*prob[1]*(1-prob[0])) + (prob[0]*prob[2]*(1-prob[1])))
 		W.append(prob[0]*(1-prob[1])*(1-prob[2]) + prob[1]*(1-prob[0])*(1-prob[2]) + prob[2]*(1-prob[1])*(1-prob[0]))
 		W.append((1 - prob[0])*(1-prob[1])*(1-prob[2]))
+		"""
 		print("")
 		print(me)
 		print("レート　　　  " +  str(rate[me]))
 		print("平均順位　　　" + str(4 - expectation))
+		"""
 	#相対的な順位計算
-	for me, i in zip(player,list(range(4))):
-		print(A_prob[i]/(A_prob[i]+B_prob[i]+C_prob[i]+D_prob[i]),
+	for i in list(range(4)):
+		compare_prob_list.append([A_prob[i]/(A_prob[i]+B_prob[i]+C_prob[i]+D_prob[i]),
 			B_prob[i]/(A_prob[i]+B_prob[i]+C_prob[i]+D_prob[i]),
 			C_prob[i]/(A_prob[i]+B_prob[i]+C_prob[i]+D_prob[i]),
-			D_prob[i]/(A_prob[i]+B_prob[i]+C_prob[i]+D_prob[i])
-		)
+			D_prob[i]/(A_prob[i]+B_prob[i]+C_prob[i]+D_prob[i])]
+			)
+	return compare_prob_list
 		
 
-def rate_all(data_list,rate,A,K=16):
+def rate_all(data_list,rate,A="",K=16):
 	the_rate = []
 	j = 0
 	for i in data_list:
