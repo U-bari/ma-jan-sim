@@ -52,7 +52,7 @@ class Labels:
 		self.label = ttk.Label(frame1,textvariable=self.text)
 		self.label.grid(row = x, column=y)
 
-#結果表示場所label配置
+#結果表示場所label配置確率
 A_2_1 = Labels(2,1)
 A_2_2 = Labels(2,2)
 A_2_3 = Labels(2,3)
@@ -70,21 +70,29 @@ A_5_2 = Labels(5,2)
 A_5_3 = Labels(5,3)
 A_5_4 = Labels(5,4)
 
+#平均着順
+A_6_1 = Labels(6,1)
+A_6_2 = Labels(6,2)
+A_6_3 = Labels(6,3)
+A_6_4 = Labels(6,4)
+
 
 #結果表示ラベルのテキストのリスト
-cbs = [A_2_1.text,A_2_2.text,A_2_3.text,A_2_4.text,
+cbs_rank = [A_2_1.text,A_2_2.text,A_2_3.text,A_2_4.text,
 	A_3_1.text,A_3_2.text,A_3_3.text,A_3_4.text,
 	A_4_1.text,A_4_2.text,A_4_3.text,A_4_4.text,
 	A_5_1.text,A_5_2.text,A_5_3.text,A_5_4.text]
 
-
+cbs_ave = [A_6_1.text,A_6_2.text,A_6_3.text,A_6_4.text]
 
 #確率表示コマンド button1を押すと実行される
 def button1_command():
 	rate_origin = rate_system.make_rate(member,{})
 	rate = rate_system.rate_all(data_list,rate_origin,A="",K=int(selected_k.get()))
-	for cb,i,j in zip(cbs,[0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3],[0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3]):
+	for cb,i,j in zip(cbs_rank,[0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3],[0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3]):
 		cb.set(rate_system.expect(cb1.name.get(),cb2.name.get(),cb3.name.get(),cb4.name.get(),rate)[i][j])
+	for label, i in zip(cbs_ave,[0,1,2,3]):
+		label.set(rate_system.expect_ave(cb1.name.get(),cb2.name.get(),cb3.name.get(),cb4.name.get(),rate)[i])
 
 #確率表示ボタン1
 button1 = ttk.Button(
@@ -104,6 +112,7 @@ rank1 = Just_label(2,0,"一着率")
 rank2 = Just_label(3,0,"二着率")
 rank3 = Just_label(4,0,"三着率")
 rank4 = Just_label(5,0,"四着率")
+rank_ave = Just_label(6,0,"平均着順")
 
 #コンボボックス説明ラベル
 select_k_label = Just_label(0,0,"係数指定")
@@ -111,6 +120,7 @@ cb1_label = Just_label(0,1,"選手１")
 cb2_label = Just_label(0,2,"選手２")
 cb3_label = Just_label(0,3,"選手３")
 cb4_label = Just_label(0,4,"選手４")
+
 
 
 root.mainloop()
