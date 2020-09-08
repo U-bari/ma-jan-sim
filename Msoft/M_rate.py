@@ -45,5 +45,8 @@ elif x == "2":
 	Y = input()
 	print("4人目を入力")
 	Z = input()
-	rate_system.expect(W,X,Y,Z,rate)
-
+	for i in range(4):
+		print("")
+		print(str(i+1)+"位着順率")
+		for j, name in zip(range(4),[W,X,Y,Z]):
+			print(name.ljust(6,"　") + str(rate_system.expect(W,X,Y,Z,rate)[i][j]))
