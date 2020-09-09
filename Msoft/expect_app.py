@@ -5,10 +5,60 @@ import csv
 import rate_system
 import data
 from functools import partial
+from matplotlib import pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
+
+
+#プロット
+def plot_rate(data_list_, member_, k_, player_1,player_2,player_3,player_4,frame_):
+
+	fig = plt.Figure(figsize=(6,4))
+	fig.subplots_adjust(hspace=0.6, wspace=0.4)
+	ax1 = fig.add_subplot(2,2,1,ylim=[1400,1600])
+	ax1.set_title("1")
+	ax2 = fig.add_subplot(2,2,2,ylim=[1400,1600])
+	ax2.set_title("2")
+	ax3 = fig.add_subplot(2,2,3,ylim=[1400,1600])
+	ax3.set_title("3")
+	ax4 = fig.add_subplot(2,2,4,ylim=[1400,1600])
+	ax4.set_title("4")
+	histroy1 = rate_system.make_rate(member_,{})
+	histroy2 = rate_system.make_rate(member_,{})
+	histroy3 = rate_system.make_rate(member_,{})
+	histroy4 = rate_system.make_rate(member_,{})
+	rate_history1 = [1500]
+	rate_history2 = [1500]
+	rate_history3 = [1500]
+	rate_history4 = [1500]
+	for data in data_list_:
+		histroy1 = rate_system.rating(data,histroy1,K=k_)
+		rate_history1.append(histroy1[player_1])
+
+	for data in data_list_:
+		histroy2 = rate_system.rating(data,histroy2,K=k_)
+		rate_history2.append(histroy2[player_2])
+
+	for data in data_list_:
+		histroy3 = rate_system.rating(data,histroy3,K=k_)
+		rate_history3.append(histroy3[player_3])
+
+	for data in data_list_:
+		histroy4 = rate_system.rating(data,histroy4,K=k_)
+		rate_history4.append(histroy4[player_4])
+
+	ax1.plot(list(range(len(data_list_)+1)), rate_history1)
+	ax2.plot(list(range(len(data_list_)+1)), rate_history2)
+	ax3.plot(list(range(len(data_list_)+1)), rate_history3)
+	ax4.plot(list(range(len(data_list_)+1)), rate_history4)
+	canvas = FigureCanvasTkAgg(fig, frame_)
+	canvas.get_tk_widget().grid(row=0, column=0)
+	canvas.draw()
+
+
+#データ読み込み
 data_list = data.data_list
-
 member = set([])
 
 #出場選手リスト作成
@@ -21,10 +71,12 @@ member_list=list(member)
 
 #ウィンドウ作成
 root = Tk()
-root.geometry("800x300")
+root.geometry("700x600")
 root.title("Mリーグ予測")
 frame1 = ttk.Frame(root)
-frame1.grid()
+frame1.grid(row=0,column=0)
+frame2 = ttk.Frame(root)
+frame2.grid(row=1,column=0)
 
 #選手選択コンボボックス
 class Select_player:
@@ -88,11 +140,16 @@ cbs_ave = [A_6_1.text,A_6_2.text,A_6_3.text,A_6_4.text]
 #確率表示コマンド button1を押すと実行される
 def button1_command():
 	rate_origin = rate_system.make_rate(member,{})
+
 	rate = rate_system.rate_all(data_list,rate_origin,A="",K=int(selected_k.get()))
+	rate_origin2 = rate_system.make_rate(member,{})
+
 	for cb,i,j in zip(cbs_rank,[0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3],[0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3]):
 		cb.set(rate_system.expect(cb1.name.get(),cb2.name.get(),cb3.name.get(),cb4.name.get(),rate)[i][j])
 	for label, i in zip(cbs_ave,[0,1,2,3]):
 		label.set(rate_system.expect_ave(cb1.name.get(),cb2.name.get(),cb3.name.get(),cb4.name.get(),rate)[i])
+	plot_rate(data_list,member,int(selected_k.get()),cb1.name.get(),cb2.name.get(),cb3.name.get(),cb4.name.get(),frame2)
+
 
 #確率表示ボタン1
 button1 = ttk.Button(
@@ -122,5 +179,9 @@ cb3_label = Just_label(0,3,"選手３")
 cb4_label = Just_label(0,4,"選手４")
 
 
-
 root.mainloop()
+
+rate_origin = rate_system.make_rate(member,{})
+rate = rate_system.rate_all(data_list,rate_origin,A="",K=4)
+
+

@@ -44,17 +44,13 @@ def expect(A,B,C,D,rate):
 			if enemy != me:
 				prob.append(1/(10**((int(rate[enemy]) - int(rate[me]))/400) + 1))
 		expectation = prob[0]*(1-prob[1])*(1-prob[2]) + prob[1]*(1-prob[0])*(1-prob[2]) + prob[2]*(1-prob[1])*(1-prob[0]) + 2*(prob[0]*prob[1]*(1-prob[2])) + 2*(prob[2]*prob[1]*(1-prob[0])) + 2*(prob[0]*prob[2]*(1-prob[1])) + 3*prob[0]*prob[1]*prob[2]
+		
 		#絶対的な確立計算
 		W.append(prob[0]*prob[1]*prob[2])
 		W.append((prob[0]*prob[1]*(1-prob[2])) + (prob[2]*prob[1]*(1-prob[0])) + (prob[0]*prob[2]*(1-prob[1])))
 		W.append(prob[0]*(1-prob[1])*(1-prob[2]) + prob[1]*(1-prob[0])*(1-prob[2]) + prob[2]*(1-prob[1])*(1-prob[0]))
 		W.append((1 - prob[0])*(1-prob[1])*(1-prob[2]))
-		"""
-		print("")
-		print(me)
-		print("レート　　　  " +  str(rate[me]))
-		print("平均順位　　　" + str(4 - expectation))
-		"""
+
 	#相対的な順位計算
 	for i in list(range(4)):
 		compare_prob_list.append([A_prob[i]/(A_prob[i]+B_prob[i]+C_prob[i]+D_prob[i]),
@@ -63,6 +59,19 @@ def expect(A,B,C,D,rate):
 			D_prob[i]/(A_prob[i]+B_prob[i]+C_prob[i]+D_prob[i])]
 			)
 	return compare_prob_list
+
+def expect_ave(A,B,C,D,rate):
+	player = [A,B,C,D]
+	expe = []
+	for me in player:
+		prob = []
+		#me:enemy確率計算
+		for enemy in player:
+			if enemy != me:
+				prob.append(1/(10**((int(rate[enemy]) - int(rate[me]))/400) + 1))
+		expectation = prob[0]*(1-prob[1])*(1-prob[2]) + prob[1]*(1-prob[0])*(1-prob[2]) + prob[2]*(1-prob[1])*(1-prob[0]) + 2*(prob[0]*prob[1]*(1-prob[2])) + 2*(prob[2]*prob[1]*(1-prob[0])) + 2*(prob[0]*prob[2]*(1-prob[1])) + 3*prob[0]*prob[1]*prob[2]
+		expe.append(4 - expectation)
+	return expe
 		
 
 def rate_all(data_list,rate,A="",K=16):
