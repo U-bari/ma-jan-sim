@@ -183,5 +183,3 @@ root.mainloop()
 
 rate_origin = rate_system.make_rate(member,{})
 rate = rate_system.rate_all(data_list,rate_origin,A="",K=4)
-
-
