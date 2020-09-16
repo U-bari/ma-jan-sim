@@ -5,7 +5,9 @@ time = data.time
 
 #dataごとにレーティング
 def rating(data,rate,K=16):
+	#iはdataのi列目を表す -> i番目の試合結果のデータ
 	for i in range(len(data)):
+		#i番目のデータの順位をrankとする
 		for rank in range(4):
 			prob = []
 			for k in range(4):
@@ -37,12 +39,27 @@ def expect(A,B,C,D,rate):
 	D_prob = []
 	prob_list = [A_prob, B_prob, C_prob, D_prob]
 	compare_prob_list = []
-	for me, W in zip(player, prob_list):
+	#以下のfor文では　me vs enemy　の確率計算をしてW where is prob_listに追加してる
+	for i, W in zip(list(range(4)), prob_list):
 		prob = []
-		#me:enemy確率計算
+		me = player[i]
+				
+		#----------------------------------------
+		#ここは正しい計算方法だが、同一選手が入力されたとき適切に判断できない
+
+		"""
 		for enemy in player:
 			if enemy != me:
 				prob.append(1/(10**((int(rate[enemy]) - int(rate[me]))/400) + 1))
+		"""
+		#----------------------------------------
+		
+		#同一選手の入力に対応したもの
+		for j in range(4):
+			if i != j:
+				enemy = player[j]
+				prob.append(1/(10**((int(rate[enemy]) - int(rate[me]))/400) + 1))
+
 		expectation = prob[0]*(1-prob[1])*(1-prob[2]) + prob[1]*(1-prob[0])*(1-prob[2]) + prob[2]*(1-prob[1])*(1-prob[0]) + 2*(prob[0]*prob[1]*(1-prob[2])) + 2*(prob[2]*prob[1]*(1-prob[0])) + 2*(prob[0]*prob[2]*(1-prob[1])) + 3*prob[0]*prob[1]*prob[2]
 		
 		#絶対的な確立計算
@@ -63,12 +80,27 @@ def expect(A,B,C,D,rate):
 def expect_ave(A,B,C,D,rate):
 	player = [A,B,C,D]
 	expe = []
-	for me in player:
+	for i in range(4):
+		me = player[i]
 		prob = []
-		#me:enemy確率計算
+				
+		#----------------------------------------
+		#ここは正しい計算方法だが、同一選手が入力されたとき適切に判断できない
+
+		"""
 		for enemy in player:
 			if enemy != me:
 				prob.append(1/(10**((int(rate[enemy]) - int(rate[me]))/400) + 1))
+		"""
+		#----------------------------------------
+		
+		#同一選手の入力に対応したもの
+		for j in range(4):
+			if i != j:
+				enemy = player[j]
+				prob.append(1/(10**((int(rate[enemy]) - int(rate[me]))/400) + 1))
+
+			
 		expectation = prob[0]*(1-prob[1])*(1-prob[2]) + prob[1]*(1-prob[0])*(1-prob[2]) + prob[2]*(1-prob[1])*(1-prob[0]) + 2*(prob[0]*prob[1]*(1-prob[2])) + 2*(prob[2]*prob[1]*(1-prob[0])) + 2*(prob[0]*prob[2]*(1-prob[1])) + 3*prob[0]*prob[1]*prob[2]
 		expe.append(4 - expectation)
 	return expe
@@ -96,3 +128,4 @@ def rate_all(data_list,rate,A="",K=16):
 		plt.show()
 
 	return rate
+

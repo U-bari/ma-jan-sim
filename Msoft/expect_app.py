@@ -65,8 +65,7 @@ member = set([])
 for i in data_list:
 	member = rate_system.member_make(i,member)
 
-member_list=list(member)
-
+member_list=sorted(list(member))
 #GUI作成
 
 #ウィンドウ作成
@@ -99,34 +98,34 @@ select_k.grid(row=1,column=0,padx=5)
 
 #結果表示場所label
 class Labels:
-	def __init__(self,x,y):
+	def __init__(self,x,y,frame):
 		self.text = StringVar()
-		self.label = ttk.Label(frame1,textvariable=self.text)
+		self.label = ttk.Label(frame,textvariable=self.text)
 		self.label.grid(row = x, column=y)
 
 #結果表示場所label配置確率
-A_2_1 = Labels(2,1)
-A_2_2 = Labels(2,2)
-A_2_3 = Labels(2,3)
-A_2_4 = Labels(2,4)
-A_3_1 = Labels(3,1)
-A_3_2 = Labels(3,2)
-A_3_3 = Labels(3,3)
-A_3_4 = Labels(3,4)
-A_4_1 = Labels(4,1)
-A_4_2 = Labels(4,2)
-A_4_3 = Labels(4,3)
-A_4_4 = Labels(4,4)
-A_5_1 = Labels(5,1)
-A_5_2 = Labels(5,2)
-A_5_3 = Labels(5,3)
-A_5_4 = Labels(5,4)
+A_2_1 = Labels(2,1,frame1)
+A_2_2 = Labels(2,2,frame1)
+A_2_3 = Labels(2,3,frame1)
+A_2_4 = Labels(2,4,frame1)
+A_3_1 = Labels(3,1,frame1)
+A_3_2 = Labels(3,2,frame1)
+A_3_3 = Labels(3,3,frame1)
+A_3_4 = Labels(3,4,frame1)
+A_4_1 = Labels(4,1,frame1)
+A_4_2 = Labels(4,2,frame1)
+A_4_3 = Labels(4,3,frame1)
+A_4_4 = Labels(4,4,frame1)
+A_5_1 = Labels(5,1,frame1)
+A_5_2 = Labels(5,2,frame1)
+A_5_3 = Labels(5,3,frame1)
+A_5_4 = Labels(5,4,frame1)
 
 #平均着順
-A_6_1 = Labels(6,1)
-A_6_2 = Labels(6,2)
-A_6_3 = Labels(6,3)
-A_6_4 = Labels(6,4)
+A_6_1 = Labels(6,1,frame1)
+A_6_2 = Labels(6,2,frame1)
+A_6_3 = Labels(6,3,frame1)
+A_6_4 = Labels(6,4,frame1)
 
 
 #結果表示ラベルのテキストのリスト
@@ -150,8 +149,11 @@ def button1_command():
 		label.set(rate_system.expect_ave(cb1.name.get(),cb2.name.get(),cb3.name.get(),cb4.name.get(),rate)[i])
 	plot_rate(data_list,member,int(selected_k.get()),cb1.name.get(),cb2.name.get(),cb3.name.get(),cb4.name.get(),frame2)
 
+	
 
-#確率表示ボタン1
+
+
+#確率表示ボタン「button1」
 button1 = ttk.Button(
 	frame1, text="ok", command=partial(button1_command)
 	)
@@ -179,7 +181,12 @@ cb3_label = Just_label(0,3,"選手３")
 cb4_label = Just_label(0,4,"選手４")
 
 
+#レート表示
+
+
 root.mainloop()
 
 rate_origin = rate_system.make_rate(member,{})
 rate = rate_system.rate_all(data_list,rate_origin,A="",K=4)
+
+
